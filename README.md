@@ -1,53 +1,46 @@
-# <img src=".github/logo.png" alt="MINT" width="28"> MINT Format
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/logo-dark.svg">
+    <img src=".github/logo.svg" alt="MINT Format" width="88">
+  </picture>
+</p>
+
+<h1 align="center">@q1k-oss/mint-format</h1>
+
+<p align="center"><strong>~45% fewer tokens than JSON</strong></p>
 
 <p align="center">
-  <img src=".github/logo.png" alt="MINT Format Logo" width="180">
+  MINT — Minimal Inference Notation for Tokens.<br>
+  YAML-style objects and Markdown-style tables. Lossless round-trip to JSON, readable with no learning curve.
 </p>
 
 <p align="center">
-  <strong>Minimal Inference Notation for Tokens</strong>
+  <a href="https://www.npmjs.com/package/@q1k-oss/mint-format"><img src="https://img.shields.io/npm/v/@q1k-oss/mint-format.svg" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/@q1k-oss/mint-format"><img src="https://img.shields.io/npm/dm/@q1k-oss/mint-format.svg" alt="npm downloads"></a>
+  <a href="https://github.com/q1k-oss/mint/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+  <a href="https://github.com/q1k-oss/mint/blob/main/SPEC.md"><img src="https://img.shields.io/badge/spec-v1.0-brightgreen" alt="SPEC v1.0"></a>
 </p>
 
 <p align="center">
-  A fresh, human-readable, token-efficient data format for LLM prompts.<br>
-  Combines YAML simplicity with Markdown table clarity.
-</p>
-
-<p align="center">
-  <a href="https://github.com/q1k-oss/mint/actions/workflows/publish.yml">
-    <img src="https://github.com/q1k-oss/mint/actions/workflows/publish.yml/badge.svg" alt="CI">
-  </a>
-  <a href="https://www.npmjs.com/package/@q1k-oss/mint-format">
-    <img src="https://img.shields.io/npm/v/@q1k-oss/mint-format.svg" alt="npm version">
-  </a>
-  <a href="https://github.com/q1k-oss/mint/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT">
-  </a>
-  <a href="https://github.com/q1k-oss/mint/blob/main/SPEC.md">
-    <img src="https://img.shields.io/badge/spec-v1.0-brightgreen" alt="SPEC v1.0">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://mint.q1k.ai"><strong>Live Playground</strong></a> ·
-  <a href="https://github.com/q1k-oss/mint/blob/main/SPEC.md"><strong>Specification</strong></a> ·
-  <a href="https://www.npmjs.com/package/@q1k-oss/mint-format"><strong>npm</strong></a>
+  <a href="https://mint.q1k.ai"><strong>Playground</strong></a> ·
+  <a href="https://github.com/q1k-oss/mint/blob/main/SPEC.md"><strong>Spec</strong></a> ·
+  <a href="https://www.npmjs.com/package/@q1k-oss/mint-format"><strong>npm</strong></a> ·
+  <a href="https://github.com/q1k-oss/mint"><strong>GitHub</strong></a> ·
+  <a href="https://q1k.ai/open-source"><strong>q1k-oss</strong></a>
 </p>
 
 ---
 
-## Why MINT?
+## Overview
 
-Modern LLMs are powerful but **tokens cost money**. Existing formats force a tradeoff:
+Tokens cost money, and every existing format makes you trade something away. JSON spends
+roughly 40% of its characters on braces, quotes and repeated keys. YAML fixes some of that
+but still repeats every key in an array of objects. TOON is compact but cryptic. CSV is
+compact and has no structure at all.
 
-| Format | Problem |
-|--------|---------|
-| **JSON** | Verbose — ~40% overhead from braces, quotes, repeated keys |
-| **YAML** | Better — but arrays of objects still repeat every key |
-| **TOON** | Efficient — but cryptic syntax, hard to read |
-| **CSV** | Compact — but no structure, can't nest |
-
-**MINT** gives you the best of all worlds:
+MINT takes the two notations people already read fluently — YAML-style key/value blocks and
+Markdown-style tables — and uses each where it is strongest. Objects nest as YAML. Arrays of
+similar objects become a table, so the column names appear once instead of once per row.
 
 ```mint
 workflow:
@@ -69,114 +62,121 @@ messages:
   | assistant | Found 3 discrepancies. Please review.|
 ```
 
-**47% smaller than JSON** with **zero learning curve**.
+That is about 47% smaller than the equivalent JSON, and you did not have to learn anything
+to read it.
 
----
+### Benchmarks
 
-## Key Features
+| Dataset | JSON | MINT | Savings |
+| --- | --- | --- | --- |
+| User records (100 rows) | 3,245 | 1,756 | **46%** |
+| API responses (50 items) | 2,891 | 1,534 | **47%** |
+| Workflow states (25 steps) | 1,567 | 892 | **43%** |
+| Nested configs | 892 | 523 | **41%** |
+| **Average** | — | — | **~45%** |
 
-- <img src=".github/logo.png" alt="MINT" width="16"> **Fresh & Clean** — Instantly readable, no learning curve
-- 📉 **47% Fewer Tokens** — Significant cost savings on LLM APIs  
-- 👁️ **Crystal Clear** — Visible `|` boundaries, Markdown tables
-- ✏️ **Edit-Friendly** — No invisible tabs, no alignment headaches
-- 🔄 **Lossless** — Perfect JSON round-trip
-- 🚀 **Fast** — Simple parsing, zero dependencies
-- 📦 **Tiny** — ~5KB minified
+Four things do the work:
 
----
+1. **Table headers once** — column names live in the header row, not in every record.
+2. **No repeated braces** — rows are delimited by `|`, not wrapped in `{}`.
+3. **Minimal quoting** — most values are unquoted.
+4. **Tokeniser-friendly structure** — pipes tokenise cleanly in practice.
 
-## Table of Contents
+### Compared with other formats
 
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Format Overview](#format-overview)
-- [CLI Usage](#cli-usage)
-- [API Reference](#api-reference)
-- [Benchmarks](#benchmarks)
-- [Specification](#specification)
-- [Comparison](#comparison-with-other-formats)
-- [Contributing](#contributing)
-
----
-
-## Installation
-
-```bash
-# npm
-npm install @q1k-oss/mint-format
-
-# pnpm  
-pnpm add @q1k-oss/mint-format
-
-# yarn
-yarn add @q1k-oss/mint-format
-
-# CLI (no install needed)
-npx @q1k-oss/mint-format-cli input.json -o output.mint
-```
-
----
-
-## Quick Start
-
-### Encode (JSON → MINT)
-
-```typescript
-import { encode } from '@q1k-oss/mint-format';
-
-const data = {
-  users: [
-    { id: 1, name: 'Alice', role: 'admin' },
-    { id: 2, name: 'Bob', role: 'user' },
-    { id: 3, name: 'Charlie', role: 'user' }
-  ]
-};
-
-console.log(encode(data));
-```
-
-**Output:**
-
-```mint
-users:
-  | id | name    | role  |
-  | 1  | Alice   | admin |
-  | 2  | Bob     | user  |
-  | 3  | Charlie | user  |
-```
-
-### Decode (MINT → JSON)
-
-```typescript
-import { decode } from '@q1k-oss/mint-format';
-
-const mint = `
-users:
-  | id | name  | role  |
-  | 1  | Alice | admin |
-  | 2  | Bob   | user  |
-`;
-
-const data = decode(mint);
-console.log(JSON.stringify(data, null, 2));
-```
-
-**Output:**
+<table>
+<tr><th>JSON</th><th>MINT</th></tr>
+<tr><td>
 
 ```json
 {
   "users": [
-    { "id": 1, "name": "Alice", "role": "admin" },
-    { "id": 2, "name": "Bob", "role": "user" }
+    { "id": 1, "name": "Alice" },
+    { "id": 2, "name": "Bob" }
   ]
 }
 ```
 
----
+</td><td>
 
-## Format Overview
+```mint
+users:
+  | id | name  |
+  | 1  | Alice |
+  | 2  | Bob   |
+```
 
-### Objects — YAML Style
+</td></tr>
+</table>
+
+| Against | Result |
+| --- | --- |
+| **JSON** | ~47% smaller, equally readable |
+| **YAML** | ~35% smaller for arrays of objects |
+| **TOON** | ~15% larger, far more readable |
+
+Reach for MINT when you are sending structured data to an LLM, paying per token, want a
+prompt a human can still read, or want clean diffs in version control. Reach for something
+else when you need maximum compression (TOON), API interoperability (JSON), or binary data
+(MessagePack).
+
+## Highlights
+
+- **~45% fewer tokens than JSON** — measurable savings on every LLM call.
+- **No learning curve** — if you can read YAML and a Markdown table, you can read MINT.
+- **Lossless** — perfect round-trip back to JSON.
+- **Zero dependencies** — ~5 KB minified.
+- **Typed** — TypeScript encoder and decoder with full declarations.
+- **CLI included** — convert files or pipe through stdin, with a `--stats` mode.
+
+## Install
+
+```bash
+npm install @q1k-oss/mint-format
+# or
+pnpm add @q1k-oss/mint-format
+# or
+yarn add @q1k-oss/mint-format
+```
+
+The CLI needs no install:
+
+```bash
+npx @q1k-oss/mint-format-cli input.json -o output.mint
+```
+
+## Quick start
+
+Encode JSON to MINT:
+
+```typescript
+import { encode } from '@q1k-oss/mint-format';
+
+const mint = encode({
+  users: [
+    { id: 1, name: 'Alice', role: 'admin' },
+    { id: 2, name: 'Bob', role: 'editor' },
+  ],
+});
+
+// users:
+//   | id | name  | role   |
+//   | 1  | Alice | admin  |
+//   | 2  | Bob   | editor |
+```
+
+And back again:
+
+```typescript
+import { decode } from '@q1k-oss/mint-format';
+
+const data = decode(mint);
+// { users: [ { id: 1, name: 'Alice', role: 'admin' }, … ] }
+```
+
+## Usage
+
+### Objects — YAML style
 
 ```mint
 user:
@@ -186,7 +186,7 @@ user:
   active: true
 ```
 
-### Nested Objects
+### Nested objects
 
 ```mint
 config:
@@ -198,9 +198,9 @@ config:
     ttl: 3600
 ```
 
-### Arrays of Objects — Markdown Tables
+### Arrays of objects — Markdown tables
 
-This is where MINT shines ✨
+This is where MINT earns its savings:
 
 ```mint
 employees:
@@ -210,16 +210,16 @@ employees:
   | 3  | Charlie | Sales       | 80000  |
 ```
 
-### Simple Arrays — Inline
+### Simple arrays — inline
 
 ```mint
 tags: typescript, javascript, nodejs
 numbers: 1, 2, 3, 4, 5
 ```
 
-### Null Values
+### Null values
 
-Use `-` in tables:
+Use `-` in a table cell:
 
 ```mint
 results:
@@ -228,9 +228,9 @@ results:
   | 2  | Bob   | -     |
 ```
 
-### Compact Mode (Optional)
+### Compact mode
 
-Enable symbols for extra compression:
+Opt in to symbol substitution for a further squeeze:
 
 ```mint
 # Standard
@@ -246,15 +246,13 @@ Enable symbols for extra compression:
 | ✗  |
 ```
 
----
-
-## CLI Usage
+### CLI
 
 ```bash
 # JSON to MINT
 npx @q1k-oss/mint-format-cli input.json -o output.mint
 
-# MINT to JSON  
+# MINT to JSON
 npx @q1k-oss/mint-format-cli input.mint -o output.json
 
 # Pipe from stdin
@@ -264,20 +262,16 @@ cat data.json | npx @q1k-oss/mint-format-cli > output.mint
 npx @q1k-oss/mint-format-cli data.json --stats
 ```
 
-### Options
-
 | Option | Description |
-|--------|-------------|
+| --- | --- |
 | `-o, --output <file>` | Output file path |
 | `-e, --encode` | Force JSON → MINT |
 | `-d, --decode` | Force MINT → JSON |
 | `--compact` | Enable symbol compression |
-| `--stats` | Show token count & savings |
+| `--stats` | Show token count and savings |
 | `--indent <n>` | Indentation spaces (default: 2) |
 
----
-
-## API Reference
+## API reference
 
 ### `encode(value, options?): string`
 
@@ -285,9 +279,9 @@ npx @q1k-oss/mint-format-cli data.json --stats
 import { encode } from '@q1k-oss/mint-format';
 
 const mint = encode(data, {
-  indent: 2,        // Spaces per level (default: 2)
-  compact: false,   // Use symbols (default: false)
-  sortKeys: false,  // Sort object keys (default: false)
+  indent: 2,        // spaces per level (default: 2)
+  compact: false,   // use symbols (default: false)
+  sortKeys: false,  // sort object keys (default: false)
 });
 ```
 
@@ -297,7 +291,7 @@ const mint = encode(data, {
 import { decode } from '@q1k-oss/mint-format';
 
 const data = decode(mintString, {
-  strict: true,     // Throw on invalid syntax (default: true)
+  strict: true,     // throw on invalid syntax (default: true)
 });
 ```
 
@@ -321,128 +315,10 @@ const estimate = estimateTokens(data);
 console.log(`Savings: ${estimate.savingsPercent}%`);
 ```
 
----
+### Grammar
 
-## Benchmarks
-
-### Token Efficiency
-
-| Dataset | JSON | MINT | Savings |
-|---------|------|------|---------|
-| User records (100 rows) | 3,245 | 1,756 | **46%** |
-| API responses (50 items) | 2,891 | 1,534 | **47%** |
-| Workflow states (25 steps) | 1,567 | 892 | **43%** |
-| Nested configs | 892 | 523 | **41%** |
-| **Average** | - | - | **~45%** |
-
-### Why MINT is Efficient
-
-1. **Table headers once** — Column names only in header row
-2. **No repeated braces** — Tables use `|` not `{}` per row  
-3. **Minimal quoting** — Most values unquoted
-4. **Visual structure** — Pipes tokenize well in LLMs
-
----
-
-## Comparison with Other Formats
-
-### vs JSON
-
-```json
-{
-  "users": [
-    { "id": 1, "name": "Alice" },
-    { "id": 2, "name": "Bob" }
-  ]
-}
-```
-
-```mint
-users:
-  | id | name  |
-  | 1  | Alice |
-  | 2  | Bob   |
-```
-
-**MINT: 47% smaller, equally readable**
-
-### vs TOON
-
-```toon
-users[2]{id,name}:
-  1,Alice
-  2,Bob
-```
-
-```mint
-users:
-  | id | name  |
-  | 1  | Alice |
-  | 2  | Bob   |
-```
-
-**MINT: ~15% larger, but far more readable**
-
-### vs YAML
-
-```yaml
-users:
-  - id: 1
-    name: Alice
-  - id: 2
-    name: Bob
-```
-
-```mint
-users:
-  | id | name  |
-  | 1  | Alice |
-  | 2  | Bob   |
-```
-
-**MINT: 35% smaller for arrays of objects**
-
-### Summary
-
-```
-                    EFFICIENCY
-                        ▲
-              TOON ●    │
-                        │
-              MINT ●────┼──── ✨ Best balance
-                        │
-              YAML ●    │
-                        │
-              JSON ●    │
-                        └────────────────► READABILITY
-```
-
----
-
-## When to Use MINT
-
-### ✅ Perfect For
-
-- Sending structured data to LLMs
-- Reducing token costs (API billing)
-- Human-readable LLM prompts
-- Arrays of similar objects
-- Agentic AI workflows
-- Version-controlled data (clean diffs)
-
-### ❌ Consider Alternatives
-
-- Maximum compression needed → TOON
-- API interoperability → JSON
-- Binary data → MessagePack
-
----
-
-## Specification
-
-See [SPEC.md](./SPEC.md) for the complete formal specification including ABNF grammar.
-
-### Quick Reference
+[SPEC.md](./SPEC.md) carries the formal specification, including the ABNF grammar. The
+shape of it:
 
 ```
 DOCUMENT     := (STATEMENT)*
@@ -453,46 +329,56 @@ TABLE_HEADER := '|' (COLUMN '|')+ NEWLINE
 TABLE_ROW    := '|' (CELL '|')+ NEWLINE
 ```
 
----
+## Development
 
-## Contributing
-
-We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md).
+A pnpm workspace with two packages: `packages/mint` (the encoder and decoder, published as
+`@q1k-oss/mint-format`) and `packages/cli` (published as `@q1k-oss/mint-format-cli`).
 
 ```bash
-# Setup
 git clone https://github.com/q1k-oss/mint.git
 cd mint
 pnpm install
 
-# Dev
-pnpm test        # Run tests
-pnpm build       # Build all packages
-pnpm benchmark   # Run benchmarks
+pnpm test         # run the test suite
+pnpm build        # build all packages
+pnpm benchmark    # run the token benchmarks
+pnpm lint         # eslint
+pnpm format       # prettier
 ```
 
----
+Roadmap:
 
-## Roadmap
-
-- [x] TypeScript encoder/decoder
+- [x] TypeScript encoder and decoder
 - [x] CLI tool
 - [x] Comprehensive tests
+- [x] Online playground — [mint.q1k.ai](https://mint.q1k.ai)
 - [ ] Python implementation
-- [ ] Go implementation  
+- [ ] Go implementation
 - [ ] Rust implementation
 - [ ] VS Code extension
-- [x] Online playground — [mint.q1k.ai](https://mint.q1k.ai)
 
----
+## Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+1. Fork the repository and clone your fork.
+2. Create a branch: `git checkout -b feat/my-change`.
+3. `pnpm install`, then `pnpm test` to confirm the suite is green.
+4. Anything that changes the format itself needs a matching change to [SPEC.md](./SPEC.md).
+5. Commit using [Conventional Commits](https://www.conventionalcommits.org/) and open a
+   pull request.
+
+## Related projects
+
+MINT is part of the q1k-oss family — see [q1k.ai/open-source](https://q1k.ai/open-source).
+
+| Package | What it does |
+| --- | --- |
+| [`@q1k-oss/mint-format`](https://github.com/q1k-oss/mint) | Token-efficient data format for LLM prompts |
+| [`@q1k-oss/context-engine`](https://github.com/q1k-oss/context-engine) | Turns conversations and files into a versioned knowledge graph |
+| [`@q1k-oss/behaviour-tree-workflows`](https://github.com/q1k-oss/behaviour-tree-workflows) | Declarative behaviour trees in YAML, durable via Temporal |
+| [`@q1k-oss/kiban`](https://github.com/q1k-oss/kiban) | React components on Radix primitives and Tailwind |
 
 ## License
 
-[MIT](./LICENSE) © 2025 MINT Format Contributors
-
----
-
-<p align="center">
-  <strong><img src=".github/logo.png" alt="MINT" width="20"> MINT Format</strong><br>
-  <em>Fresh data for LLMs. Keep it minimal.</em>
-</p>
+[MIT](./LICENSE)
