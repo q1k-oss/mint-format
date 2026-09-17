@@ -17,15 +17,15 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/@q1k-oss/mint-format"><img src="https://img.shields.io/npm/v/@q1k-oss/mint-format.svg" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/@q1k-oss/mint-format"><img src="https://img.shields.io/npm/dm/@q1k-oss/mint-format.svg" alt="npm downloads"></a>
-  <a href="https://github.com/q1k-oss/mint/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
-  <a href="https://github.com/q1k-oss/mint/blob/main/SPEC.md"><img src="https://img.shields.io/badge/spec-v1.0-brightgreen" alt="SPEC v1.0"></a>
+  <a href="https://github.com/q1k-oss/mint-format/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+  <a href="https://github.com/q1k-oss/mint-format/blob/main/SPEC.md"><img src="https://img.shields.io/badge/spec-v1.0-brightgreen" alt="SPEC v1.0"></a>
 </p>
 
 <p align="center">
   <a href="https://mint.q1k.ai"><strong>Playground</strong></a> ·
-  <a href="https://github.com/q1k-oss/mint/blob/main/SPEC.md"><strong>Spec</strong></a> ·
+  <a href="https://github.com/q1k-oss/mint-format/blob/main/SPEC.md"><strong>Spec</strong></a> ·
   <a href="https://www.npmjs.com/package/@q1k-oss/mint-format"><strong>npm</strong></a> ·
-  <a href="https://github.com/q1k-oss/mint"><strong>GitHub</strong></a> ·
+  <a href="https://github.com/q1k-oss/mint-format"><strong>GitHub</strong></a> ·
   <a href="https://q1k.ai/oss"><strong>q1k-oss</strong></a>
 </p>
 
@@ -335,7 +335,7 @@ A pnpm workspace with two packages: `packages/mint` (the encoder and decoder, pu
 `@q1k-oss/mint-format`) and `packages/cli` (published as `@q1k-oss/mint-format-cli`).
 
 ```bash
-git clone https://github.com/q1k-oss/mint.git
+git clone https://github.com/q1k-oss/mint-format.git
 cd mint
 pnpm install
 
@@ -374,7 +374,7 @@ MINT is part of the q1k-oss family — see [q1k.ai/oss](https://q1k.ai/oss).
 
 | Package | What it does |
 | --- | --- |
-| [`@q1k-oss/mint-format`](https://github.com/q1k-oss/mint) | Token-efficient data format for LLM prompts |
+| [`@q1k-oss/mint-format`](https://github.com/q1k-oss/mint-format) | Token-efficient data format for LLM prompts |
 | [`@q1k-oss/context-engine`](https://github.com/q1k-oss/context-engine) | Turns conversations and files into a versioned knowledge graph |
 | [`@q1k-oss/behaviour-tree-workflows`](https://github.com/q1k-oss/behaviour-tree-workflows) | Declarative behaviour trees in YAML, durable via Temporal |
 | [`@q1k-oss/kiban`](https://github.com/q1k-oss/kiban) | React components on Radix primitives and Tailwind |
