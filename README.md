@@ -26,7 +26,7 @@
   <a href="https://github.com/q1k-oss/mint/blob/main/SPEC.md"><strong>Spec</strong></a> ·
   <a href="https://www.npmjs.com/package/@q1k-oss/mint-format"><strong>npm</strong></a> ·
   <a href="https://github.com/q1k-oss/mint"><strong>GitHub</strong></a> ·
-  <a href="https://q1k.ai/open-source"><strong>q1k-oss</strong></a>
+  <a href="https://q1k.ai/oss"><strong>q1k-oss</strong></a>
 </p>
 
 ---
@@ -370,7 +370,7 @@ Contributions are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Related projects
 
-MINT is part of the q1k-oss family — see [q1k.ai/open-source](https://q1k.ai/open-source).
+MINT is part of the q1k-oss family — see [q1k.ai/oss](https://q1k.ai/oss).
 
 | Package | What it does |
 | --- | --- |
