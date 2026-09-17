@@ -13,10 +13,10 @@
     "decoder",
     "minimal"
   ],
-  "homepage": "https://github.com/q1k-oss/mint",
+  "homepage": "https://github.com/q1k-oss/mint-format#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/q1k-oss/mint.git",
+    "url": "git+https://github.com/q1k-oss/mint-format.git",
     "directory": "packages/mint"
   },
   "license": "MIT",
